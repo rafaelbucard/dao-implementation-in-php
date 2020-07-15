@@ -1,39 +1,35 @@
 <?php
-// Formulário de edição de contatos DB
 require 'config.php';
+require 'dao/UsuarioDaoMysql.php';
 
-$info = [];
+$usuarioDao = new UsuarioDaoMysql($pdo);
+
+$usuario = false;
+
 $id = filter_input(INPUT_GET, 'id');
 if($id) {
+    $usuario = $usuarioDao->findById($id);
+}
 
-    $sql = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
-    $sql->bindValue(':id', $id);
-    $sql->execute();
-
-    if($sql->rowCount() >0){
-        $info = $sql->fetch(PDO::FETCH_ASSOC);
-    }else{
-        header("Location: index.php");
-        exit; 
-    }
-
-} else {
+if($usuario === false) {
     header("Location: index.php");
     exit;
 }
 ?>
-<h1>EDITAR USUÁRIO</h1>
-<form method="POST" action="editar_action.php">
+<h1>Editar Usuário</h1>
 
-    <input type="hidden" name="id" value="<?=$info['id'];?>"/>  
-    
+<form method="POST" action="editar_action.php">
+    <input type="hidden" name="id" value="<?=$usuario->getId();?>" />
+
     <label>
-        NOME:<br/>
-        <input type="text" name="name" value="<?=$info['nome'];?>"/>
+        Nome:<br/>
+        <input type="text" name="name" value="<?=$usuario->getNome();?>" />
     </label><br/><br/>
+
     <label>
-        EMAIL:<br/>
-        <input type="email" name="email" value="<?=$info['email'];?>"/>
+        E-mail:<br/>
+        <input type="email" name="email" value="<?=$usuario->getEmail();?>" />
     </label><br/><br/>
-    <input type="submit" value="Salvar"/>
+
+    <input type="submit" value="Salvar" />
 </form>
