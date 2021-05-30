@@ -1,8 +1,8 @@
 <?php
 require 'config.php';
-require 'dao/UsuarioDaoMysql.php';
+require 'dao/DaoMysql.php';
 
-$usuarioDao = new UsuarioDaoMysql($pdo);
+$usuarioDao = new DaoMysql($pdo);
 $lista = $usuarioDao->findAll();
 
 ?> 

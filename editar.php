@@ -1,8 +1,8 @@
 <?php
 require 'config.php';
-require 'dao/UsuarioDaoMysql.php';
+require 'dao/DaoMysql.php';
 
-$usuarioDao = new UsuarioDaoMysql($pdo);
+$usuarioDao = new DaoMysql($pdo);
 
 $usuario = false;
 
@@ -10,6 +10,7 @@ $id = filter_input(INPUT_GET, 'id');
 if($id) {
     $usuario = $usuarioDao->findById($id);
 }
+
 
 if($usuario === false) {
     header("Location: index.php");
